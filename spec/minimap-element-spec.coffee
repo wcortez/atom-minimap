@@ -487,6 +487,7 @@ describe 'MinimapElement', ->
           editorElement.style.height = '100px'
 
           sleep(150)
+          waitsFor -> minimapElement.frameRequested
           runs -> nextAnimationFrame()
 
         it 'makes the minimap smaller than soft wrap', ->
@@ -500,7 +501,8 @@ describe 'MinimapElement', ->
           nextAnimationFrame()
 
           atom.config.set 'minimap.minimapScrollIndicator', true
-          nextAnimationFrame()
+          waitsFor -> minimapElement.frameRequested
+          runs -> nextAnimationFrame()
 
         it 'offsets the scroll indicator by the difference', ->
           indicator = minimapElement.shadowRoot.querySelector('.minimap-scroll-indicator')
@@ -509,7 +511,8 @@ describe 'MinimapElement', ->
       describe 'and when minimap.displayPluginsControls setting is true', ->
         beforeEach ->
           atom.config.set 'minimap.displayPluginsControls', true
-          nextAnimationFrame()
+          waitsFor -> minimapElement.frameRequested
+          runs -> nextAnimationFrame()
 
         it 'offsets the scroll indicator by the difference', ->
           openQuickSettings = minimapElement.shadowRoot.querySelector('.open-minimap-quick-settings')
@@ -518,7 +521,8 @@ describe 'MinimapElement', ->
       describe 'and then disabled', ->
         beforeEach ->
           atom.config.set 'minimap.adjustMinimapWidthToSoftWrap', false
-          nextAnimationFrame()
+          waitsFor -> minimapElement.frameRequested
+          runs -> nextAnimationFrame()
 
         it 'adjusts the width of the minimap', ->
           expect(minimapElement.offsetWidth).toBeCloseTo(editorElement.offsetWidth / 11, -1)
